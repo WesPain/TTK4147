@@ -13,7 +13,9 @@ void* fn(void* args){
       globalVar++;
       sem_post(&mutex);
     }
+    sem_wait(&mutex);
     printf("Vars: %ld, %ld\n", localVar, globalVar);
+    sem_post(&mutex);
     return NULL;
 }
 int main(){
@@ -24,4 +26,5 @@ int main(){
     pthread_create(&threadHandle2, NULL, fn, NULL);
     pthread_join(threadHandle1, NULL);
     pthread_join(threadHandle2, NULL);
+    sem_destroy(&mutex);
 }
